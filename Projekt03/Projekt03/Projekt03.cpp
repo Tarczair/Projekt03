@@ -6,67 +6,71 @@ using namespace std;
 template <typename T>
 class Sortuj {
 public:
-	void quick_sort(vector<T>& tab, int lewy, int prawy)
-	{
-		if (lewy >= prawy || tab.size() == 1) return;
+    void merge_sort(vector<T>& tab, int lewy, int prawy)
+    {
+        if (lewy >= prawy) return;
 
-		int i = lewy;
-		int j = prawy;
-		T pivot = tab[(lewy + prawy) / 2];
+        int srodek = (lewy + prawy) / 2;
 
-		while (i <= j)
-		{
-			while (tab[i] < pivot) i++;
-			while (tab[j] > pivot) j--;
+        merge_sort(tab, lewy, srodek);
+        merge_sort(tab, srodek + 1, prawy);
 
-			if (i <= j)
-			{
-				swap(tab[i], tab[j]);
-				i++;
-				j--;
-			}
-		}
+        merge(tab, lewy, srodek, prawy);
+    }
 
-		if (lewy < j)
-			quick_sort(tab, lewy, j);
+private:
+    void merge(vector<T>& tab, int lewy, int srodek, int prawy)
+    {
+        vector<T> temp;
+        temp.reserve(prawy - lewy + 1);
 
-		if (i < prawy)
-			quick_sort(tab, i, prawy);
-	}
+        int i = lewy;
+        int j = srodek + 1;
+
+        while (i <= srodek && j <= prawy)
+        {
+            if (tab[i] <= tab[j])
+                temp.push_back(tab[i++]);
+            else
+                temp.push_back(tab[j++]);
+        }
+
+        while (i <= srodek)
+            temp.push_back(tab[i++]);
+
+        while (j <= prawy)
+            temp.push_back(tab[j++]);
+
+        for (int k = 0; k < temp.size(); k++)
+            tab[lewy + k] = temp[k];
+    }
 };
 
 
 int main()
 {
-	vector<int> tab1 = { 4, -7, 1, 2, 4 };
-	Sortuj<int> s1;
+    vector<int> tab1 = { 4, -7, 1, 2, 4 };
+    Sortuj<int> s1;
 
-	vector<double> tab2 = { -5.1341, -4.5512, -4.512, -4.5, -4.7 };
-	Sortuj<double> s2;
+    vector<double> tab2 = { -5.1341, -4.5512, -4.512, -4.5, -4.7 };
+    Sortuj<double> s2;
 
-	vector<float> tab3 = { -5.1341, -4.5512, -4.512, -4.5, -4.7 };
-	Sortuj<float> s3;
+    vector<float> tab3 = { -5.1341f, -4.5512f, -4.512f, -4.5f, -4.7f };
+    Sortuj<float> s3;
 
-	s1.quick_sort(tab1, 0, tab1.size() - 1);
-	s2.quick_sort(tab2, 0, tab2.size() - 1);
-	s3.quick_sort(tab3, 0, tab3.size() - 1);
+    s1.merge_sort(tab1, 0, tab1.size() - 1);
+    s2.merge_sort(tab2, 0, tab2.size() - 1);
+    s3.merge_sort(tab3, 0, tab3.size() - 1);
 
-	//wypisanie posortowanych elementów
-	for (int x : tab1)
-	{
-		cout << x << " ";
-	}
+    // wypisanie wyników
+    for (int x : tab1) cout << x << " ";
+    cout << endl;
 
-	cout << endl;
-	for (double x : tab2)
-	{
-		cout << x << " ";
-	}
+    for (double x : tab2) cout << x << " ";
+    cout << endl;
 
-	cout << endl;
-	for (double x : tab3)
-	{
-		cout << x << " ";
-	}
-	return 0;
+    for (float x : tab3) cout << x << " ";
+
+    return 0;
 }
+
