@@ -1,0 +1,7 @@
+﻿  Projekt03.cpp
+C:\Users\Jakub\source\repos\Projekt03\Projekt03\Projekt03.cpp(47,62): warning C4305: "inicjowanie": obcięcie z "double" do "_Ty"
+          with
+          [
+              _Ty=float
+          ]
+  Projekt03.vcxproj -> C:\Users\Jakub\source\repos\Projekt03\Debug\Projekt03.exe
